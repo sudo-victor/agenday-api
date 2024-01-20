@@ -15,6 +15,12 @@ export class ScheduleAnAppointmentUseCase {
     const customer = await this.customerGateway.getById(input.customerId)
     if (!customer) throw new CustomerNotFoundError()
     // verify available
+    // validate if is a valid day of week
+    const dayOfWeek = input.scheduledAt.getDay()
+    if (!company.daysOfWeek.includes(dayOfWeek)) throw new Error('Date unavailable')
+    // validade if is between date
+    // validade if is between business hour
+    // validade hour
   }
 }
 
