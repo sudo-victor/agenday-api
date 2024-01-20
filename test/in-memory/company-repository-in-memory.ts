@@ -1,7 +1,7 @@
 import { UniqueId } from '@/core/domain/unique-id'
-import { type CompanyRepository } from '@/domain/appointment/application/repositories/company-repository'
-import { type Company } from '@/domain/appointment/enterprise/entities/company'
-import { Cnpj } from '@/domain/appointment/enterprise/value-objects/cnpj'
+import { type CompanyRepository } from '@/domain/account/application/repositories/company-repository'
+import { type Company } from '@/domain/account/enterprise/entities/company'
+import { Cnpj } from '@/domain/account/enterprise/value-objects/cnpj'
 
 export class CompanyRepositoryInMemory implements CompanyRepository {
   items: Company[] = []

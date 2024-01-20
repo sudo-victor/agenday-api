@@ -1,5 +1,5 @@
 import { UniqueId } from '@/core/domain/unique-id'
-import { Company } from '@/domain/appointment/enterprise/entities/company'
+import { Company } from '@/domain/account/enterprise/entities/company'
 import { faker } from '@faker-js/faker'
 
 export class CompanyFixtures {

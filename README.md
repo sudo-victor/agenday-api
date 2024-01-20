@@ -74,7 +74,7 @@ appointment {
 - Agendar algum serviço
 - Cliente cancela um agendamento
 
-## RFN
+## RNF
 
 - Node
 - Fastify
