@@ -19,12 +19,44 @@ interface CreateAppointmentProps {
 }
 
 export class Appointment extends Entity<AppointmentProps> {
+  set customerId (data: UniqueId) {
+    this.props.customerId = data
+  }
+
+  get customerId (): UniqueId {
+    return this.props.customerId
+  }
+
+  set companyId (data: UniqueId) {
+    this.props.companyId = data
+  }
+
   get companyId (): UniqueId {
     return this.props.companyId
   }
 
+  set scheduledAt (data: Date) {
+    this.props.scheduledAt = data
+  }
+
   get scheduledAt (): Date {
     return this.props.scheduledAt
+  }
+
+  set canceledAt (data: Date | undefined) {
+    this.props.canceledAt = data
+  }
+
+  get canceledAt (): Date | undefined {
+    return this.props.canceledAt
+  }
+
+  set status (data: string) {
+    this.props.status = data
+  }
+
+  get status (): string {
+    return this.props.status
   }
 
   static create (props: CreateAppointmentProps, id?: string): Appointment {
@@ -35,5 +67,11 @@ export class Appointment extends Entity<AppointmentProps> {
       code: randomUUID(),
       status: 'pending'
     }, id)
+  }
+
+  cancel (): void {
+    if (this.canceledAt) throw new Error('Appointment already canceled')
+    this.props.canceledAt = new Date()
+    this.props.status = 'canceled'
   }
 }

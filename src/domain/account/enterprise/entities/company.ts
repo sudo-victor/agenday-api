@@ -14,6 +14,7 @@ interface CompanyProps {
   endBusinessHour?: number
   startDate?: Date
   endDate?: Date
+  cancellationPolicyHour: number
 }
 
 interface CreateCompanyProps {
@@ -26,6 +27,7 @@ interface CreateCompanyProps {
   startDate?: Date
   endDate?: Date
   scheduleInterval?: number
+  cancellationPolicyHour?: number
 }
 
 export class Company extends Entity<CompanyProps> {
@@ -69,6 +71,14 @@ export class Company extends Entity<CompanyProps> {
     return this.props.endDate
   }
 
+  set cancellationPolicyHour (data: number) {
+    this.props.cancellationPolicyHour = data
+  }
+
+  get cancellationPolicyHour (): number {
+    return this.props.cancellationPolicyHour
+  }
+
   set scheduleInterval (data: number | ScheduleInterval) {
     this.props.scheduleInterval = data instanceof ScheduleInterval ? data : ScheduleInterval.create(data)
   }
@@ -84,6 +94,7 @@ export class Company extends Entity<CompanyProps> {
   static create (props: CreateCompanyProps, id?: string): Company {
     return new Company({
       ...props,
+      cancellationPolicyHour: 3,
       scheduleInterval: ScheduleInterval.create(props.scheduleInterval ?? 15),
       daysOfWeek: new DaysOfWeek(props.daysOfWeek ? new Set(props.daysOfWeek) : new Set()),
       cnpj: Cnpj.create(props.cnpj)

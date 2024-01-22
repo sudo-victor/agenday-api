@@ -17,4 +17,16 @@ export class AppointmentRepositoryInMemory implements AppointmentRepository {
     })
     return appointment ?? null
   }
+
+  async update (appointment: Appointment): Promise<void> {
+    const current = this.items.find(item => item.id.isEqual(appointment.id))
+    if (!current) return undefined
+    current.canceledAt = appointment.canceledAt
+    current.status = appointment.status
+  }
+
+  async findById (id: string): Promise<Appointment | null> {
+    const appointment = this.items.find((item) => item.id.isEqual(new UniqueId(id)))
+    return !appointment ? null : appointment
+  }
 }

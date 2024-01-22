@@ -15,6 +15,7 @@ export class UpdateCompanyAppointmentSettingsUseCase {
     company.startDate = input.startDate
     company.endDate = input.endDate
     company.scheduleInterval = input.scheduleInterval
+    company.cancellationPolicyHour = input.cancellationPolicyHour
     await this.companyRepository.update(company)
   }
 }
@@ -27,4 +28,5 @@ interface Input {
   startDate: Date
   endDate: Date
   scheduleInterval: number
+  cancellationPolicyHour: number
 }

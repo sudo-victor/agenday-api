@@ -6,6 +6,7 @@ export interface CompanyGatewayResponse {
   startDate: Date
   endDate: Date
   scheduleInterval: number
+  cancellationPolicyHour: number
 }
 
 export interface CompanyGateway {

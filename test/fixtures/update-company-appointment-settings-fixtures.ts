@@ -8,6 +8,7 @@ interface MakeInputProps {
   startDate: Date
   endDate: Date
   scheduleInterval: number
+  cancellationPolicyHour: number
 }
 
 export class UpdateCompanyAppointmentSettingsFixtures {
@@ -20,6 +21,7 @@ export class UpdateCompanyAppointmentSettingsFixtures {
       startDate: new Date(),
       endDate: new Date(),
       scheduleInterval: 30,
+      cancellationPolicyHour: 3,
       ...props
     }
   }
