@@ -4,10 +4,8 @@ import { type CompanyGateway } from '../gateways/company-gateway'
 import { type CustomerGateway } from '../gateways/customer-gateway'
 import { Appointment } from '../../enterprise/entities/appointment'
 import { type AppointmentRepository } from '../repositories/appointment-repository'
-import { DayOfTheWeekUnavailableError } from '@/core/usecases/errors/day-of-the-week-unavailable-error'
-import { DateUnavailableError } from '@/core/usecases/errors/date-unavailable-error'
-import { InvalidScheduleHourError } from '@/core/usecases/errors/invalid-schedule-hour-error'
 import { DateAlreadyScheduledError } from '@/core/usecases/errors/date-already-scheduled-error'
+import { ValidateScheduleDateService } from '../../enterprise/services/validate-schedule-date-service'
 
 export class ScheduleAnAppointmentUseCase {
   constructor (
@@ -21,13 +19,7 @@ export class ScheduleAnAppointmentUseCase {
     if (!company) throw new CompanyNotFoundError()
     const customer = await this.customerGateway.getById(input.customerId)
     if (!customer) throw new CustomerNotFoundError()
-    const dayOfWeek = input.scheduledAt.getDay()
-    if (!company.daysOfWeek.includes(dayOfWeek)) throw new DayOfTheWeekUnavailableError()
-    const currentScheduleDateIsWithinAvailableRange = company.startDate <= input.scheduledAt && company.endDate >= input.scheduledAt
-    if (!currentScheduleDateIsWithinAvailableRange) throw new DateUnavailableError()
-    const scheduleHourInMinutes = input.scheduledAt.getHours() * 60 + input.scheduledAt.getMinutes()
-    const doesHourIsValid = (scheduleHourInMinutes % company.scheduleInterval) === 0
-    if (!doesHourIsValid) throw new InvalidScheduleHourError()
+    ValidateScheduleDateService.match(company, input)
     const doesAppointmentAlreadyScheduled = await this.appointmentRepository.findByDateAndCompanyId(input.scheduledAt, company.id)
     if (doesAppointmentAlreadyScheduled) throw new DateAlreadyScheduledError()
     const appointment = Appointment.create({ ...input })
