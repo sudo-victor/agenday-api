@@ -2,7 +2,7 @@ import { UnauthorizedError } from '@/core/usecases/errors/unauthorized-error'
 import { type CompanyGateway } from '../gateways/company-gateway'
 import { type AppointmentRepository } from '../repositories/appointment-repository'
 import { CompanyNotFoundError } from '@/core/usecases/errors/company-not-found-error'
-import { ExceedCancellationPolicyDateError } from '@/core/usecases/errors/exceed-cancellation-policy-date-error'
+import { ValidateCancellationPolicyService } from '../../enterprise/services/validate-cancellation-policy-service'
 
 export class CancelAppointmentUseCase {
   constructor (
@@ -16,9 +16,10 @@ export class CancelAppointmentUseCase {
     if (!appointment.customerId.isEqual(input.actorId)) throw new UnauthorizedError()
     const company = await this.companyGateway.getById(appointment.companyId.toValue())
     if (!company) throw new CompanyNotFoundError()
-    const cancellationPolicyLimitDate = appointment.scheduledAt
-    cancellationPolicyLimitDate.setHours(cancellationPolicyLimitDate.getHours() - company.cancellationPolicyHour)
-    if (new Date() > cancellationPolicyLimitDate) throw new ExceedCancellationPolicyDateError()
+    ValidateCancellationPolicyService.validate({
+      scheduledAt: appointment.scheduledAt,
+      cancellationPolicyHour: company.cancellationPolicyHour
+    })
     appointment.cancel()
     await this.appointmentRepository.update(appointment)
   }
