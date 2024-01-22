@@ -1,7 +1,5 @@
-interface ICompany {
+export interface CompanyGatewayResponse {
   id: string
-  name: string
-  cnpj: string
   daysOfWeek: number[]
   startBusinessHour: number
   endBusinessHour: number
@@ -11,5 +9,5 @@ interface ICompany {
 }
 
 export interface CompanyGateway {
-  getById: (id: string) => Promise<ICompany | null>
+  getById: (id: string) => Promise<CompanyGatewayResponse | null>
 }

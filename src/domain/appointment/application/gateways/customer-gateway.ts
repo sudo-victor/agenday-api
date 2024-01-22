@@ -1,4 +1,4 @@
-interface ICustomer {
+export interface CustomerGatewayResponse {
   id: string
   name: string
   cpf: string
@@ -6,5 +6,5 @@ interface ICustomer {
 }
 
 export interface CustomerGateway {
-  getById: (id: string) => Promise<ICustomer | null>
+  getById: (id: string) => Promise<CustomerGatewayResponse | null>
 }

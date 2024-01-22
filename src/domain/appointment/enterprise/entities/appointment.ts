@@ -1,5 +1,6 @@
 import { Entity } from '@/core/domain/entity'
 import { UniqueId } from '@/core/domain/unique-id'
+import { randomUUID } from 'crypto'
 
 interface AppointmentProps {
   companyId: UniqueId
@@ -13,18 +14,26 @@ interface AppointmentProps {
 interface CreateAppointmentProps {
   companyId: string
   customerId: string
-  code: string
   scheduledAt: Date
   canceledAt?: Date
-  status: string
 }
 
 export class Appointment extends Entity<AppointmentProps> {
+  get companyId (): UniqueId {
+    return this.props.companyId
+  }
+
+  get scheduledAt (): Date {
+    return this.props.scheduledAt
+  }
+
   static create (props: CreateAppointmentProps, id?: string): Appointment {
     return new Appointment({
       ...props,
       companyId: new UniqueId(props.companyId),
-      customerId: new UniqueId(props.customerId)
+      customerId: new UniqueId(props.customerId),
+      code: randomUUID(),
+      status: 'pending'
     }, id)
   }
 }
