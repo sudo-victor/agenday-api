@@ -1,6 +1,7 @@
 import fastify from 'fastify'
 import { accountRoutes } from '../http/controllers/accounts/routes'
 import { ZodError } from 'zod'
+import { env } from '../env'
 
 export const app = fastify()
 
@@ -13,7 +14,7 @@ app.setErrorHandler((error, _, reply) => {
       .send({ message: 'Validation error', issues: error.format() })
   }
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (env.NODE_ENV !== 'production') {
     console.error(error)
   } else {
     // TODO here we should log to an external tool like DataDog/NewRelic/Sentry

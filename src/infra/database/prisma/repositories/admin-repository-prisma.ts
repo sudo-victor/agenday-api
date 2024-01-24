@@ -4,7 +4,6 @@ import { prisma } from '../connection'
 
 export class AdminRepositoryPrisma implements AdminRepository {
   async save (admin: Admin): Promise<void> {
-    console.log(process.env.DATABASE_URL)
     await prisma.user.create({
       data: {
         name: admin.name,
