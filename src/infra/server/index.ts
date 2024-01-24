@@ -1,22 +1,23 @@
-import Fastify, { type FastifyInstance } from 'fastify'
+import fastify from 'fastify'
+import { accountRoutes } from '../http/controllers/accounts/routes'
+import { ZodError } from 'zod'
 
-class Server {
-  private readonly server: FastifyInstance
+export const app = fastify()
 
-  constructor () {
-    this.server = Fastify({
-      logger: true
-    })
+app.register(accountRoutes)
+
+app.setErrorHandler((error, _, reply) => {
+  if (error instanceof ZodError) {
+    return reply
+      .status(400)
+      .send({ message: 'Validation error', issues: error.format() })
   }
 
-  listen (port: number = 3333): void {
-    this.server.listen({ port }, (err) => {
-      if (err) {
-        this.server.log.error(err)
-        process.exit(1)
-      }
-    })
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(error)
+  } else {
+    // TODO here we should log to an external tool like DataDog/NewRelic/Sentry
   }
-}
 
-export { Server }
+  return reply.status(500).send({ message: 'Internal server error.' })
+})

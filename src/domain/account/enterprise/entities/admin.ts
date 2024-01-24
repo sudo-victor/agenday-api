@@ -18,6 +18,10 @@ export interface CreateAdminProps {
 }
 
 export class Admin extends Entity<AdminProps> {
+  get name (): string {
+    return this.props.name
+  }
+
   get email (): string {
     return this.props.email
   }

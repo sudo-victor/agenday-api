@@ -31,6 +31,14 @@ interface CreateCompanyProps {
 }
 
 export class Company extends Entity<CompanyProps> {
+  get name (): string {
+    return this.props.name
+  }
+
+  get ownerId (): UniqueId {
+    return this.props.ownerId
+  }
+
   set daysOfWeek (data: number[] | DaysOfWeek) {
     this.props.daysOfWeek = data instanceof DaysOfWeek ? data : new DaysOfWeek(new Set(data))
   }

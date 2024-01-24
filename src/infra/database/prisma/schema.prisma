@@ -27,23 +27,23 @@ model User {
   email        String       @unique
   document     String       @unique
   documentType DocumentType @map("document_type")
-  password     String       @map("password_hashed")
+  password     String?      @map("password_hashed")
   phone        String?
   role         Role         @default(CUSTOMER)
-  Company      Company[]
+  Company      Company?
 
   @@map("users")
 }
 
 model Company {
-  id               String                    @id @default(uuid())
+  id               String                     @id @default(uuid())
   name             String
-  document         String                    @unique
-  documentType     DocumentType              @default(CNPJ) @map("document_type")
-  owner            User                      @relation(fields: [ownerId], references: [id])
-  ownerId          String                    @map("owner_id")
-  settings         CompanyAppointmentSetting @relation(fields: [companySettingId], references: [id])
-  companySettingId String                    @unique @map("company_setting_id")
+  document         String                     @unique
+  documentType     DocumentType               @default(CNPJ) @map("document_type")
+  owner            User                       @relation(fields: [ownerId], references: [id])
+  ownerId          String                     @unique @map("owner_id")
+  settings         CompanyAppointmentSetting? @relation(fields: [companySettingId], references: [id])
+  companySettingId String?                    @unique @map("company_setting_id")
 
   @@map("companies")
 }
