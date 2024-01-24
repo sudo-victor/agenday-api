@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/main.ts",
-    "test:watch": "vitest",
+    "test:unit": "vitest -c vitest.unit.config.ts",
+    "test:e2e": "vitest -c vitest.e2e.config.ts",
     "migrate:dev": "prisma migrate dev",
     "prisma:studio": "prisma studio"
   },
