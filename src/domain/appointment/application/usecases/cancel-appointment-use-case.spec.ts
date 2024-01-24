@@ -45,7 +45,7 @@ describe('[Use Case] Cancel appointment', () => {
     await expect(callback).rejects.toBeInstanceOf(UnauthorizedError)
   })
 
-  it('should not be able to cancel an appointment after cancellation policy', async () => {
+  it('should not be able to cancel an appointment after cancellation policy date', async () => {
     vi.setSystemTime(new Date('2024-01-02 12:01'))
     vi.spyOn(companyGateway, 'getById').mockResolvedValue({
       id: randomUUID(),

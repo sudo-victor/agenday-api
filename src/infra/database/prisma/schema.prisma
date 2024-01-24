@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  COLABORATOR
+  CUSTOMER
+}
+
+enum DocumentType {
+  CPF
+  CNPJ
+}
+
+model User {
+  id           String       @id @default(uuid())
+  name         String
+  email        String       @unique
+  document     String       @unique
+  documentType DocumentType @map("document_type")
+  password     String       @map("password_hashed")
+  phone        String?
+  role         Role         @default(CUSTOMER)
+  Company      Company[]
+
+  @@map("users")
+}
+
+model Company {
+  id               String                    @id @default(uuid())
+  name             String
+  document         String                    @unique
+  documentType     DocumentType              @default(CNPJ) @map("document_type")
+  owner            User                      @relation(fields: [ownerId], references: [id])
+  ownerId          String                    @map("owner_id")
+  settings         CompanyAppointmentSetting @relation(fields: [companySettingId], references: [id])
+  companySettingId String                    @unique @map("company_setting_id")
+
+  @@map("companies")
+}
+
+model CompanyAppointmentSetting {
+  id                     String   @id @default(uuid())
+  daysOfWeek             String   @map("days_of_week")
+  scheduleInterval       Int      @map("schedule_interval_in_min")
+  startBusinessHour      Int      @map("start_business_hour_in_min")
+  endBusinessHour        Int      @map("end_business_hour_in_min")
+  startDate              DateTime @map("start_date")
+  endDate                DateTime @map("end_date")
+  cancellationPolicyHour Int      @map("cancellation_policy_hour_in_min")
+  Company                Company?
+
+  @@map("company_appointment_settings")
+}
