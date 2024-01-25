@@ -22,15 +22,17 @@ enum DocumentType {
 }
 
 model User {
-  id           String       @id @default(uuid())
-  name         String
-  email        String       @unique
-  document     String       @unique
-  documentType DocumentType @map("document_type")
-  password     String?      @map("password_hashed")
-  phone        String?
-  role         Role         @default(CUSTOMER)
-  Company      Company?
+  id               String       @id @default(uuid())
+  name             String
+  email            String       @unique
+  document         String       @unique
+  documentType     DocumentType @map("document_type")
+  password         String?      @map("password_hashed")
+  phone            String?
+  role             Role         @default(CUSTOMER)
+  ownCompany       Company?     @relation("ownCompany")
+  companyBelonging Company?     @relation(fields: [companyId], references: [id])
+  companyId        String?      @unique @map("company_id")
 
   @@map("users")
 }
@@ -40,8 +42,9 @@ model Company {
   name             String
   document         String                     @unique
   documentType     DocumentType               @default(CNPJ) @map("document_type")
-  owner            User                       @relation(fields: [ownerId], references: [id])
+  owner            User                       @relation(fields: [ownerId], references: [id], name: "ownCompany")
   ownerId          String                     @unique @map("owner_id")
+  colaborators     User[]
   settings         CompanyAppointmentSetting? @relation(fields: [companySettingId], references: [id])
   companySettingId String?                    @unique @map("company_setting_id")
 

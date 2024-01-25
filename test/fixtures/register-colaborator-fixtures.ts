@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { randomUUID } from 'crypto'
+import { DocumentFaker } from 'test/fakers/document-faker'
 
 interface MakeInputProps {
   companyId: string
@@ -13,7 +14,7 @@ export class RegisterColaboratorFixtures {
     return {
       companyId: randomUUID(),
       name: faker.person.fullName(),
-      cpf: '214.336.880-18',
+      cpf: DocumentFaker.cpf(),
       email: faker.internet.email(),
       ...props
     }

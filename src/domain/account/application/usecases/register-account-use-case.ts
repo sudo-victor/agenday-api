@@ -11,7 +11,7 @@ export class RegisterAccountUseCase {
     private readonly companyRepository: CompanyRepository
   ) {}
 
-  async execute (input: Input): Promise<void> {
+  async execute (input: Input): Promise<Output> {
     const companyAlreadyExists = await this.companyRepository.findByCnpj(input.cnpj)
     if (companyAlreadyExists) throw new CompanyAlreadyExistsError()
     const adminAlreadyExists = await this.adminRepository.findByEmailOrCpf(input.email, input.cpf)
@@ -24,6 +24,9 @@ export class RegisterAccountUseCase {
       ownerId: admin.id
     })
     await this.companyRepository.save(company)
+    return {
+      accountId: company.id.toValue()
+    }
   }
 }
 
@@ -33,4 +36,8 @@ interface Input {
   name: string
   cpf: string
   email: string
+}
+
+interface Output {
+  accountId: string
 }

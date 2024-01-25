@@ -21,6 +21,18 @@ export interface CreateColaboratorProps {
 }
 
 export class Colaborator extends Entity<ColaboratorProps> {
+  get companyId (): UniqueId {
+    return this.props.companyId
+  }
+
+  get phone (): string | undefined {
+    return this.props.phone
+  }
+
+  get name (): string {
+    return this.props.name
+  }
+
   get email (): string {
     return this.props.email
   }

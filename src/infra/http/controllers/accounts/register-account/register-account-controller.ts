@@ -11,8 +11,8 @@ export class RegisterAccountController {
     try {
       const { body } = request
       const { name, companyName, cnpj, cpf, email } = RegisterAccountValidator.match(body)
-      await this.usecase.execute({ name, companyName, cnpj, cpf, email })
-      await response.status(201).send()
+      const result = await this.usecase.execute({ name, companyName, cnpj, cpf, email })
+      await response.status(201).send({ id: result.accountId })
     } catch (error) {
       if (error instanceof CompanyAlreadyExistsError) {
         return await response.status(400).send({ message: error.message })
