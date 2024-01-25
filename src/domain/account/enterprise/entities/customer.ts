@@ -21,6 +21,18 @@ export interface CreateCustomerProps {
 }
 
 export class Customer extends Entity<CustomerProps> {
+  get name (): string {
+    return this.props.name
+  }
+
+  get phone (): string {
+    return this.props.phone
+  }
+
+  get companyId (): UniqueId {
+    return this.props.companyId
+  }
+
   get email (): string {
     return this.props.email
   }

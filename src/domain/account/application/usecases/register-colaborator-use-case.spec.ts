@@ -25,7 +25,7 @@ describe('[Use Case] Register colaborator use case', () => {
     await sut.execute(input)
     const colaboratorPersisted = colaboratorRepository.items[0]
     expect(colaboratorPersisted.id.toValue()).toBeDefined()
-    expect(colaboratorPersisted.cpf.toValue()).toBe('21433688018')
+    expect(colaboratorPersisted.cpf.toValue()).toBe(input.cpf.replace(/\./g, '').replace(/\-/g, ''))
     expect(colaboratorPersisted.email).toBe(input.email)
   })
 
