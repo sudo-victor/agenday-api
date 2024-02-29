@@ -74,7 +74,8 @@ describe('[Use Case] Schedule an appointment', () => {
       endBusinessHour: 20 * 60,
       startDate: new Date('2024-01-01'),
       endDate: new Date('2024-12-01'),
-      scheduleInterval: 15
+      scheduleInterval: 15,
+      cancellationPolicyHour: 1
     })
     const input = ScheduleAnAppointmentFixtures.makeInput({
       scheduledAt: new Date('2024-04-10 12:00'), companyId
